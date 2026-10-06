@@ -4,8 +4,17 @@ TreeView is a plugin for [vis](https://github.com/martanne/vis) to view files, f
 
 # Available commands
 
-- `:tree`
-- `:parent`
+- `:tree` - open TreeView
+- `:parent` - open parent folder in TreeView (No matter from where)
+
+# Installation
+
+To install this plugin, just clone it and install dependency:
+
+```sh
+git clone https://github.com/stalker57241/treeview ~/.config/vis/plugins/treview
+luarocks install luafilesystem
+```
 
 # Usage
 
