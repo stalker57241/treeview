@@ -1,7 +1,6 @@
 # TreeView
 
-TreeView is a plugin for [vis](https://github.com/martanne/vis)
-P. S. Not a tree now
+TreeView is a plugin for [vis](https://github.com/martanne/vis) to view files, folders, and so on, what isn't possible by default
 
 # Usage
 
@@ -12,12 +11,18 @@ require('plugins/treeview').setup()
 ```
 
 Enter `:tree` to open file list.
-Or add a macro
+
+Or add a mappings, like this:
+
 ```
 vis.events.subscribe(vis.events.WIN_OPEN, function(win) -- luacheck: no unused args
   -- your commands
   vis:map(vis.modes.NORMAL, '<Tab>', function()
-    vis:command("tree")
+    vis:command("tree") -- for opening tree
+    return true
+  end)
+  vis:map(vis.modes.NORMAL, '!', function()
+    vis:command("parent") -- for jumping up
     return true
   end)
 end)
@@ -29,4 +34,8 @@ end)
 
 # What need to do
 
-- Open subfolders directly in active list
+- [X] Open subfolders directly in active list
+- [ ] Highlight it!
+- [ ] Search by name
+  - [ ] Filter by name
+- [ ] More sorting algorithms (If possible)
