@@ -248,7 +248,7 @@ local function maptree(window)
 	end)
 end
 local function getcwd()
-	return os.getenv("PWD") or io.popen("pwd"):read("*l")
+	return lfs.currentdir()
 end
 local function opentree(path)
 	if module.win == nil then
