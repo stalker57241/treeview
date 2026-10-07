@@ -92,7 +92,7 @@ local function readfiles(buffer, path, indent, cursor)
 end
 local function openfiles(buffer, path)
 	buffer:delete(0, buffer.size)
-	local cursor = writeheader(buffer, 0, "\tTreeView\n\t<Enter> to interact\n\t<Space> to change root\n\t:parent to open parent directory\n" .. path .. "\n\n")
+	local cursor = writeheader(buffer, 0, "\tTreeView\n\t<Enter> to interact\n\t<KPEnter> to change root\n\t:parent to open parent directory\n" .. path .. "\n\n")
 	if path ~= "/" then
 		buffer:insert(cursor, "* ../\n")
 		cursor = cursor + 6
@@ -240,9 +240,10 @@ local function maptree(window)
 	unmap(window, vis.modes.NORMAL, "c")
     unmap(window, vis.modes.NORMAL, "C")
 	unmap(window, vis.modes.NORMAL, "r")
-	window:map(vis.modes.NORMAL, " ", function()
+	window:map(vis.modes.NORMAL, "<KPEnter>", function()
 		make_root(window)
 		window:draw()
+		vis:redraw()
 	end)
 	window:map(vis.modes.NORMAL, "<Enter>", function()
 		interact(window)
@@ -273,7 +274,7 @@ vis.events.subscribe(vis.events.WIN_CLOSE, function(win)
 		return true
 	end
 	return false
-end)
+end, 1)
 function module.setup()
 	module.path = getcwd()
 	module.relativepath = module.path
