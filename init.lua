@@ -1,9 +1,11 @@
--- [[
--- PLUGIN: TreeView
--- DESCRIPTION: Tree view plugin for vis
--- AUTHOR:
--- 	stalker320 (also stalker57241)
--- ]]
+--[[
+PLUGIN: TreeView
+DESCRIPTION: Tree view plugin for vis
+REPOSITORIES:
+- https://github.com/stalker57241/treeview
+AUTHOR:
+	stalker320 (also stalker57241)
+]]
 
 local lfs = require("lfs")
 
