@@ -6,6 +6,12 @@ TreeView is a plugin for [vis](https://github.com/martanne/vis) to view files, f
 
 - `:tree` - open TreeView
 - `:parent` - open parent folder in TreeView (No matter from where)
+  - Parent folder will open as tree root
+  
+# Bindings
+
+- `Enter` to interact with file or folder.
+- `Shift` + `Enter` (also `<KPEnter>`) To open folder or file's parent as tree root.
 
 # Installation
 
@@ -28,7 +34,7 @@ Enter `:tree` to open file list.
 
 Or add a mappings, like this:
 
-```
+```lua
 vis.events.subscribe(vis.events.WIN_OPEN, function(win) -- luacheck: no unused args
   -- your commands
   vis:map(vis.modes.NORMAL, '<Tab>', function()
@@ -44,7 +50,7 @@ end)
 
 # Dependencies
 
-- [`lfs`](https://github.com/lunarmodules/luafilesystem)
+- [`luafilesystem`](https://github.com/lunarmodules/luafilesystem) package
 
 # What need to do
 
