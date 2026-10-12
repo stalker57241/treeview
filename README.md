@@ -50,7 +50,7 @@ end)
 
 # Dependencies
 
-- [`luafilesystem`](https://github.com/lunarmodules/luafilesystem) package
+- [`luafilesystem`](https://github.com/stalker57241/luafilesystem) package
 
 # What need to do
 
