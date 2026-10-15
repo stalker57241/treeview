@@ -51,7 +51,7 @@ end)
 # Dependencies
 
 - [`luafilesystem`](https://github.com/stalker57241/luafilesystem5.4) package
-
+- [`tabview`](https://github.com/stalker57241/tabview) plugin (optional)
 # What need to do
 
 - [X] Open subfolders directly in active list
