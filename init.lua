@@ -206,7 +206,13 @@ local function interact(window)
 	if state == "/" or state == "\t" then return end
 	if state == " " then
 		-- open file
-		module.lastwin.file = module.path .. parentfolder .. "/" .. file
+		if vis:module_exist("plugins/tabview") then
+			vis.events.emit("tab_open", module.path .. parentfolder .. "/" .. file)
+			vis:info("Opened new tab")
+		else
+			vis:info("Opened new file")
+			module.lastwin.file = module.path .. parentfolder .. "/" .. file
+		end
 		return
 	elseif state == "+" then
 		-- open folder
@@ -258,6 +264,7 @@ local function opentree(path)
 		module.lastwin = vis.win
 		vis:command("vnew")
 		module.win = vis.win
+		module.win.owner = "treeview"
 		module.file = module.win.file
 		module.file.name = "TreeView"
 		openfiles(module.file, path)
@@ -267,14 +274,6 @@ local function opentree(path)
 end
 
 -- EXPORT --
-vis.events.subscribe(vis.events.WIN_CLOSE, function(win)
-	if win == module.win then
-		module.win = nil
-		module.file = nil
-		return true
-	end
-	return false
-end, 1)
 function module.setup()
 	module.path = getcwd()
 	module.relativepath = module.path
@@ -283,6 +282,19 @@ function module.setup()
 		module.path = parent(module.path)
 		openfiles(module.file, module.path)
 	end end, "Opens parent directory")
+	vis.events.subscribe(vis.events.WIN_CLOSE, function(win)
+		if win == module.win then
+			module.win = nil
+			module.file = nil
+			return true
+		end
+		return false
+	end, 1)
+	vis.events.subscribe(vis.events.WIN_OPEN, function(win)
+		if win == module.win then
+			return true
+		end
+	end, 1)
 end
 
 return module
