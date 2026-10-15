@@ -18,7 +18,7 @@ TreeView is a plugin for [vis](https://github.com/martanne/vis) to view files, f
 To install this plugin, just clone it and install dependency:
 
 ```sh
-git clone https://github.com/stalker57241/treeview ~/.config/vis/plugins/treview
+git clone https://github.com/stalker57241/treeview ~/.config/vis/plugins/treeview
 luarocks install luafilesystem
 ```
 
