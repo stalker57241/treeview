@@ -2,6 +2,8 @@
 
 TreeView is a plugin for [vis](https://github.com/martanne/vis) to view files, folders, and so on, what isn't possible by default
 
+![screenshot1](https://github.com/stalker57241/treeview/blob/0ddc4235d0bfe7ae75b151bd7c86b16ca6df6997/.github/screenshot1.png)
+
 # Available commands
 
 - `:tree` - open TreeView
