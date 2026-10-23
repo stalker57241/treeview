@@ -10,6 +10,7 @@ AUTHOR:
 local lfs = require("lfs")
 
 local vis = _G.vis
+local ui = vis.ui
 
 local env, mt = {}, {
 	__index = _G,
@@ -28,6 +29,12 @@ local module = {
 	file = nil,
 	path = "~",
 	relativepath = "~"
+}
+local styles = {
+	STYLE_DIRECTORY = nil,
+	STYLE_FILE = nil,
+	STYLE_RUNTIME_FILE = nil,
+	STYLE_SPECIAL = nil
 }
 -- local file
 local function noop() return true end
@@ -80,6 +87,7 @@ local function readfiles(buffer, path, indent, cursor)
 		else buffer:insert(cursor, "  ") end
 		cursor = cursor + 2
 		buffer:insert(cursor, entry.field)
+		local lineno, col = buffer:line_column_from_offset(cursor)
 		cursor = cursor + #entry.field
 		if entry.isdir then
 			buffer:insert(cursor, "/")
@@ -88,6 +96,7 @@ local function readfiles(buffer, path, indent, cursor)
 		buffer:insert(cursor, "\n")
 		cursor = cursor + 1
 	end end
+--	module.win:draw()
 	return cursor
 end
 local function openfiles(buffer, path)
@@ -168,6 +177,25 @@ local function getineditorpath(buffer, level, lineid)
 	if parentfolder == "" then return "" end
 	return "/" .. parentfolder
 end
+local function draw(win)
+	-- local offset = win.viewport.bytes.start
+	-- vis.ui:style_define(styles.STYLE_DIRECTORY, "fore:red")
+	win:style(styles.STYLE_DIRECTORY, 0, win.file:offset_from_line_column(2) - 1)
+	for id=7,#win.file.lines do
+		local line = win.file.lines[id]
+		local linestart = win.file:offset_from_line_column(id) -- + level * 2
+		local lineend = win.file:offset_from_line_column(id + 1) - 1
+		local state = getstate(line)
+		
+		if state == ' ' then
+			win:style(styles.STYLE_FILE, linestart, lineend)
+		elseif state == '*' then
+			win:style(styles.STYLE_SPECIAL, linestart, lineend)
+		elseif state == '+' or state == '-' then
+			win:style(styles.STYLE_DIRECTORY, linestart, lineend)
+		end
+	end
+end 
 local function make_root(window)
 	local lineid = window.selection.line
 	local buffer = window.file
@@ -266,10 +294,11 @@ local function opentree(path)
 		module.win = vis.win
 		module.win.owner = "treeview"
 		module.file = module.win.file
-		module.file.name = "TreeView"
+		module.win:status("TreeView")
 		openfiles(module.file, path)
 		module.win.syntax = nil
 		maptree(module.win)
+		module.file.modified = false
 	else module.win:close(true) end
 end
 
@@ -277,6 +306,14 @@ end
 function module.setup()
 	module.path = getcwd()
 	module.relativepath = module.path
+	styles.STYLE_DIRECTORY = ui:style_push()
+	styles.STYLE_FILE = ui:style_push()
+	styles.STYLE_SPECIAL = ui:style_push()
+	styles.STYLE_RUNTIME_FILE = ui:style_push()
+	ui:style_define(styles.STYLE_DIRECTORY, "fore:blue")
+	ui:style_define(styles.STYLE_FILE, "fore:white")
+	ui:style_define(styles.STYLE_SPECIAL, "fore:magenta")
+	ui:style_define(styles.STYLE_RUNTIME_FILE, "fore:green")
 	vis:command_register('tree', function() opentree(module.path) end, 'Opens tree view')
 	vis:command_register('parent', function() if module.win ~= nil then
 		module.path = parent(module.path)
@@ -290,6 +327,12 @@ function module.setup()
 		end
 		return false
 	end, 1)
+	vis.events.subscribe(vis.events.WIN_HIGHLIGHT, function(win) 
+		if win == module.win then
+			draw(win)
+			return true
+		end
+	end)
 	vis.events.subscribe(vis.events.WIN_OPEN, function(win)
 		if win == module.win then
 			return true
