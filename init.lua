@@ -87,7 +87,6 @@ local function readfiles(buffer, path, indent, cursor)
 		else buffer:insert(cursor, "  ") end
 		cursor = cursor + 2
 		buffer:insert(cursor, entry.field)
-		local lineno, col = buffer:line_column_from_offset(cursor)
 		cursor = cursor + #entry.field
 		if entry.isdir then
 			buffer:insert(cursor, "/")
