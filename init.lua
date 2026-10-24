@@ -30,6 +30,7 @@ local module = {
 	path = "~",
 	relativepath = "~"
 }
+local actions = {}
 local styles = {
 	STYLE_DIRECTORY = nil,
 	STYLE_FILE = nil,
@@ -261,6 +262,7 @@ local function interact(window)
 	end
 end
 local function maptree(window)
+--[[
 	unmap(window, vis.modes.NORMAL, "i")
 	unmap(window, vis.modes.NORMAL, "I")
 	unmap(window, vis.modes.NORMAL, "a")
@@ -273,10 +275,13 @@ local function maptree(window)
 	unmap(window, vis.modes.NORMAL, "c")
     unmap(window, vis.modes.NORMAL, "C")
 	unmap(window, vis.modes.NORMAL, "r")
+--]]
+	for i, action in ipairs(actions) do
+		module.win:map(i.mode, i.keyname, action)
+	end
 	window:map(vis.modes.NORMAL, "<KPEnter>", function()
 		make_root(window)
 		window:draw()
-		vis:redraw()
 	end)
 	window:map(vis.modes.NORMAL, "<Enter>", function()
 		interact(window)
@@ -286,6 +291,7 @@ end
 local function getcwd()
 	return lfs.currentdir()
 end
+
 local function opentree(path)
 	if module.win == nil then
 		module.lastwin = vis.win
@@ -301,6 +307,16 @@ local function opentree(path)
 	else module.win:close(true) end
 end
 
+function module.unmap(mode, keyname)
+	if module.win == nil then return end
+	module.win:map(mode, keyname, noop)
+	actions[{mode = mode, keyname = keyname}] = nil
+end
+function module.map(mode, keyname, action)
+	if module.win == nil then return end
+	module.win:map(mode, keyname, action)
+	actions[{mode, keyname}] = action
+end
 -- EXPORT --
 function module.setup()
 	module.path = getcwd()
