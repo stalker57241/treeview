@@ -28,7 +28,8 @@ local module = {
 	lastwin = nil,
 	file = nil,
 	path = "~",
-	relativepath = "~"
+	relativepath = "~",
+	treewidth = nil
 }
 local styles = {
 	STYLE_DIRECTORY = nil,
@@ -291,7 +292,10 @@ local function opentree(path)
 		module.lastwin = vis.win
 		vis:command("vnew")
 		module.win = vis.win
-		module.win.owner = "treeview"
+		if module.treewidth ~= nil then
+			module.win.options["maxsize"] = module.treewidth
+		end
+		module.win.owner = "treeview"	
 		module.file = module.win.file
 		module.win:status("TreeView")
 		openfiles(module.file, path)
@@ -337,6 +341,10 @@ function module.setup()
 			return true
 		end
 	end, 1)
+end
+
+function module.setwidth(width)
+	module.treewidth = width
 end
 
 return module
