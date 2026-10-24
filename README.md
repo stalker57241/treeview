@@ -2,6 +2,10 @@
 
 TreeView is a plugin for [vis](https://github.com/martanne/vis) to view files, folders, and so on, what isn't possible by default
 
+# update-max-size branch
+
+This branch waiting for approving of my [`pull request`](https://github.com/martanne/vis/pull/1430)
+
 # Available commands
 
 - `:tree` - open TreeView
