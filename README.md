@@ -36,23 +36,6 @@ treeview.setup()
 
 Enter `:tree` to open file list.
 
-
-## Opening by default
-
-To open it, when no files present, add to your `visrc.lua`:
-```lua
--- ...
--- This event emitted after all windows created and files opened, before mainloop started
-vis.events.subscribe(vis.events.START, function() 
-    if vis.win.file.name == nil then -- or something like "vis.win.file.path == nil"
-        vis:command('tree')
-        -- Add feedkeys to go right, like <C-w>l
-        vis:feedkeys('<C-w>l')
-    end
-end)
--- ...
-```
-
 # Dependencies
 
 - [`luafilesystem`](https://github.com/stalker57241/luafilesystem5.4) package
