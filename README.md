@@ -18,19 +18,21 @@ luarocks install luafilesystem
 
 # Usage
 
-Enabling:
+## Enabling plugin
 
 ```lua
-require('plugins/treeview').setup()
+local treeview = require('plugins/treeview')
+treeview.setup()
+-- There will be more configurations and options
 ```
 
 Enter `:tree` to open file list.
 
-Or add a mappings, like this:
+## Adding mappings
 
 ```
-vis.events.subscribe(vis.events.WIN_OPEN, function(win) -- luacheck: no unused args
-  -- your commands
+vis.events.subscribe(vis.events.INIT, function()
+  -- your other settings
   vis:map(vis.modes.NORMAL, '<Tab>', function()
     vis:command("tree") -- for opening tree window by button
     return true
@@ -40,6 +42,23 @@ vis.events.subscribe(vis.events.WIN_OPEN, function(win) -- luacheck: no unused a
     return true
   end)
 end)
+```
+
+
+## Opening by default
+
+To open it, when no files present, add to your `visrc.lua`:
+```lua
+-- ...
+-- This event emitted after all windows created and files opened, before mainloop started
+vis.events.subscribe(vis.events.START, function() 
+    if vis.win.file.name == nil then -- or something like "vis.win.file.path == nil"
+        vis:command('tree')
+        -- Add feedkeys to go right, like <C-w>l
+        vis:feedkeys('<C-w>l')
+    end
+end)
+-- ...
 ```
 
 # Dependencies
