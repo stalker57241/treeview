@@ -6,6 +6,34 @@
 
 Sets up everything
 
+## Commands
+
+### `:tree`
+
+Toggles treeview display
+
+### `:parent`
+
+Opens parent directory in `treeview`
+
+## Recommendations
+
+Mine `visrc.lua`:
+
+```lua
+vis.events.subscribe(vis.events.INIT, function()
+  -- Other settings
+  vis:map(vis.modes.NORMAL, '<Tab>', function()
+    vis:command("tree") -- for opening tree window by button
+    return true
+  end)
+  vis:map(vis.modes.NORMAL, '!', function()
+    vis:command("parent") -- for jumping up inside tree
+    return true
+  end)
+end)
+```
+
 # At `dev` (**WIP**)
 
 This changes available at `dev` branch and will be added, removed. or changed in further updates.
