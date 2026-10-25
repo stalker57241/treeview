@@ -76,7 +76,7 @@ end)
 # What need to do
 
 - [X] Open subfolders directly in active list
-- [ ] Highlight it!
+- [X] Highlight it!
 - [ ] Search by name
   - [ ] Filter by name
 - [ ] More sorting algorithms (If possible)
