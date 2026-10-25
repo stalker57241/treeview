@@ -29,7 +29,11 @@ local module = {
 	file = nil,
 	path = "~",
 	relativepath = "~",
-	treewidth = nil
+	treewidth = nil,
+	events = {
+		INTERACT = "interact", -- interact()
+		OPEN_FOLDER = "open_folder" -- open_folder(newbasedir)
+	}
 }
 local styles = {
 	STYLE_DIRECTORY = nil,
@@ -107,6 +111,7 @@ local function openfiles(buffer, path)
 		cursor = cursor + 6
 	end
 	cursor = readfiles(buffer, path, 0, cursor)
+	vis.events.emit(module.events.OPEN_FOLDER, path)
 end
 local function getlevel(line)
 	local spaces = (line:match("^( *)") or ""):len()
@@ -341,6 +346,10 @@ function module.setup()
 			return true
 		end
 	end, 1)
+end
+
+function module.getpath()
+	return module.path
 end
 
 function module.setwidth(width)
