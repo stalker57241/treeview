@@ -55,7 +55,7 @@ vis.events.subscribe(vis.events.START, function()
     if vis.win.file.name == nil then -- or something like "vis.win.file.path == nil"
         vis:command('tree')
         -- Add feedkeys to go right, like <C-w>l
-        vis:feedkeys('<V-w>l')
+        vis:feedkeys('<C-w>l')
     end
 end)
 -- ...
