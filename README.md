@@ -30,7 +30,7 @@ Enter `:tree` to open file list.
 
 ## Adding mappings
 
-```
+```lua
 vis.events.subscribe(vis.events.INIT, function()
   -- your other settings
   vis:map(vis.modes.NORMAL, '<Tab>', function()
