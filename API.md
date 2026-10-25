@@ -34,6 +34,24 @@ vis.events.subscribe(vis.events.INIT, function()
 end)
 ```
 
+### Opening by default
+
+To open `treeview` on start, when no files present add to `visrc.lua` this:
+
+```lua
+local treeview = require('plugins/treeview')
+-- ...
+-- This event emitted after all windows created and files opened, before mainloop started
+vis.events.subscribe(vis.events.START, function() 
+    if vis.win.file.name == nil then -- or something like "vis.win.file.path == nil"
+        vis:command('tree')
+        -- Add feedkeys to go right, like <C-w>l
+        vis:feedkeys('<C-w>l')
+    end
+end)
+-- ...
+```
+
 # At `dev` (**WIP**)
 
 This changes available at `dev` branch and will be added, removed. or changed in further updates.
@@ -60,9 +78,11 @@ Returns root folder of `treeview`
 
 ## Setters
 
-### `module.setwidth(width)`
+### `tabview.setwidth(width)`
 
 **VWIP** (**Very** work in progress)
+
+Sets width of `treeview` panel.
 
 Awaiting for merging pull request [`max_size`](https://github.com/martanne/vis/pull/1430)
 
