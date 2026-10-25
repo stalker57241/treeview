@@ -28,7 +28,12 @@ local module = {
 	lastwin = nil,
 	file = nil,
 	path = "~",
-	relativepath = "~"
+	relativepath = "~",
+	treewidth = nil,
+	events = {
+		INTERACT = "interact", -- interact()
+		OPEN_FOLDER = "open_folder" -- open_folder(newbasedir)
+	}
 }
 local styles = {
 	STYLE_DIRECTORY = nil,
@@ -106,6 +111,7 @@ local function openfiles(buffer, path)
 		cursor = cursor + 6
 	end
 	cursor = readfiles(buffer, path, 0, cursor)
+	vis.events.emit(module.events.OPEN_FOLDER, path)
 end
 local function getlevel(line)
 	local spaces = (line:match("^( *)") or ""):len()
@@ -291,7 +297,10 @@ local function opentree(path)
 		module.lastwin = vis.win
 		vis:command("vnew")
 		module.win = vis.win
-		module.win.owner = "treeview"
+		if module.treewidth ~= nil then
+			module.win.options["maxsize"] = module.treewidth
+		end
+		module.win.owner = "treeview"	
 		module.file = module.win.file
 		module.win:status("TreeView")
 		openfiles(module.file, path)
@@ -337,6 +346,14 @@ function module.setup()
 			return true
 		end
 	end, 1)
+end
+
+function module.getpath()
+	return module.path
+end
+
+function module.setwidth(width)
+	module.treewidth = width
 end
 
 return module
