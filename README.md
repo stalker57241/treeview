@@ -50,7 +50,8 @@ end)
 To open it, when no files present, add to your `visrc.lua`:
 ```lua
 -- ...
-vis.events.subscribe(vis.events.START --[[ Emitted after all windows created and files opened, before mainloop started ]], function() 
+-- This event emitted after all windows created and files opened, before mainloop started
+vis.events.subscribe(vis.events.START, function() 
     if vis.win.file.name == nil then -- or something like "vis.win.file.path == nil"
         vis:command('tree')
         -- Add feedkeys to go right, like <C-w>l
