@@ -36,43 +36,11 @@ treeview.setup()
 
 Enter `:tree` to open file list.
 
-## Adding mappings
-
-```lua
-vis.events.subscribe(vis.events.INIT, function()
-  -- your other settings
-  vis:map(vis.modes.NORMAL, '<Tab>', function()
-    vis:command("tree") -- for opening tree window by button
-    return true
-  end)
-  vis:map(vis.modes.NORMAL, '!', function()
-    vis:command("parent") -- for jumping up inside tree
-    return true
-  end)
-end)
-```
-
-
-## Opening by default
-
-To open it, when no files present, add to your `visrc.lua`:
-```lua
--- ...
--- This event emitted after all windows created and files opened, before mainloop started
-vis.events.subscribe(vis.events.START, function() 
-    if vis.win.file.name == nil then -- or something like "vis.win.file.path == nil"
-        vis:command('tree')
-        -- Add feedkeys to go right, like <C-w>l
-        vis:feedkeys('<C-w>l')
-    end
-end)
--- ...
-```
-
 # Dependencies
 
 - [`luafilesystem`](https://github.com/stalker57241/luafilesystem5.4) package
 - [`tabview`](https://github.com/stalker57241/tabview) plugin (optional)
+
 # What need to do
 
 - [X] Open subfolders directly in active list
@@ -80,3 +48,7 @@ end)
 - [ ] Search by name
   - [ ] Filter by name
 - [ ] More sorting algorithms (If possible)
+
+# For developers
+
+[`API`](https://github.com/stalker57241/treeview/blob/general/API.md)
