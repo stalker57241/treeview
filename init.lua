@@ -340,16 +340,16 @@ function module.setup()
 	end)
 	vis.events.subscribe(module.events.INTERACT, function(path)
 		if loaded("plugins/tabview") then
-			vis:info("Opened new tab")
 			if module.lastwin ~= nil then
 				vis.events.emit("tab_open", path)
 			else
 				vis:command("open " .. path)
 				module.lastwin = vis.win
+				module.lastwin.owner = "tabview"
 				module.lastwin.file.path = path
-				opentree(module.path)
-				opentree(module.path)
 			end
+			opentree(module.path)
+			opentree(module.path)
 		else
 			if vis.win.file.name == nil then
 				vis:command("open " .. path)
