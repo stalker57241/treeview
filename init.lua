@@ -24,6 +24,7 @@ local _ENV = setmetatable(env, mt)
 -- MAIN --
 
 local module = {
+	startup = false,
 	win = nil,
 	lastwin = nil,
 	file = nil,
@@ -239,13 +240,7 @@ local function interact(window)
 	if state == "/" or state == "\t" then return end
 	if state == " " then
 		-- open file
-		if vis:module_exist("plugins/tabview") then
-			vis.events.emit("tab_open", module.path .. parentfolder .. "/" .. file)
-			vis:info("Opened new tab")
-		else
-			vis:info("Opened new file")
-			module.lastwin.file = module.path .. parentfolder .. "/" .. file
-		end
+		vis.events.emit(module.events.INTERACT, module.path .. parentfolder .. "/" .. file)
 		return
 	elseif state == "+" then
 		-- open folder
@@ -281,12 +276,12 @@ local function maptree(window)
 	unmap(window, vis.modes.NORMAL, "r")
 	window:map(vis.modes.NORMAL, "<KPEnter>", function()
 		make_root(window)
-		window:draw()
-		vis:redraw()
+		-- window:draw()
+		-- vis:redraw()
 	end)
 	window:map(vis.modes.NORMAL, "<Enter>", function()
 		interact(window)
-		window:draw()
+		-- window:draw()
 	end)
 end
 local function getcwd()
@@ -322,11 +317,49 @@ function module.setup()
 	ui:style_define(styles.STYLE_FILE, "fore:white")
 	ui:style_define(styles.STYLE_SPECIAL, "fore:magenta")
 	ui:style_define(styles.STYLE_RUNTIME_FILE, "fore:green")
-	vis:command_register('tree', function() opentree(module.path) end, 'Opens tree view')
-	vis:command_register('parent', function() if module.win ~= nil then
-		module.path = parent(module.path)
-		openfiles(module.file, module.path)
-	end end, "Opens parent directory")
+	vis:command_register('tree', function()
+		opentree(module.path)
+	end, 'Opens tree view')
+	
+	vis:command_register('parent', function()
+		if module.win ~= nil then
+			module.path = parent(module.path)
+			openfiles(module.file, module.path)
+		end 
+	end, "Opens parent directory")
+	
+	vis.events.subscribe(vis.events.START, function()
+		vis:message("TREEVIEW: STARTUP")
+		if vis.win.file.size > 0 then return end
+		if module.startup == true then
+			local win = vis.win
+			opentree(module.path)
+			module.lastwin = nil
+			win:close()
+		end
+	end)
+	vis.events.subscribe(module.events.INTERACT, function(path)
+		if loaded("plugins/tabview") then
+			vis:info("Opened new tab")
+			if module.lastwin ~= nil then
+				vis.events.emit("tab_open", path)
+			else
+				vis:command("open " .. path)
+				module.lastwin = vis.win
+				module.lastwin.file.path = path
+				opentree(module.path)
+				opentree(module.path)
+			end
+		else
+			if vis.win.file.name == nil then
+				vis:command("open " .. path)
+				module.lastwin = vis.win
+				module.lastwin.file.path = path
+				opentree(module.path)
+				opentree(module.path)
+			end
+		end
+	end)
 	vis.events.subscribe(vis.events.WIN_CLOSE, function(win)
 		if win == module.win then
 			module.win = nil
@@ -347,13 +380,24 @@ function module.setup()
 		end
 	end, 1)
 end
-
+function module.open_tree(path)
+	if path == nil then
+		opentree(module.path)
+	else
+		opentree(path)
+	end 
+end
 function module.getpath()
 	return module.path
 end
-
+function module.setstartup(value)
+	module.startup = value
+end
 function module.setwidth(width)
 	module.treewidth = width
 end
-
+function module.replace(win)
+	opentree(module.path)
+	win:close()
+end
 return module
