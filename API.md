@@ -36,7 +36,7 @@ end)
 
 ### Opening by default
 
-To open `treeview` on start, when no files present add to `visrc.lua` this:
+To open `treeview` on side at start, when no files present add to `visrc.lua` this:
 
 ```lua
 local treeview = require('plugins/treeview')
@@ -70,15 +70,21 @@ This changes available at `dev` branch and will be added, removed. or changed in
 
 Emitted when editor rerooting
 
+## Misc
+
+### `treeview.replace(win)`
+
+Opens `treeview` and closes `win`
+
 ## Getters
 
-### `tabview.getpath()`
+### `treeview.getpath()`
 
 Returns root folder of `treeview`
 
 ## Setters
 
-### `tabview.setwidth(width)`
+### `treeview.setwidth(width)`
 
 **VWIP** (**Very** work in progress)
 
@@ -87,3 +93,7 @@ Sets width of `treeview` panel.
 Awaiting for merging pull request [`max_size`](https://github.com/martanne/vis/pull/1430)
 
 Works properly only with [`stalker57241/vis`](https://github.com/stalker57241/vis)
+
+### `treeview.setstartup(bool)`
+
+Sets if treeview opens at startup
