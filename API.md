@@ -62,7 +62,7 @@ This changes available at `dev` branch and will be added, removed. or changed in
 
 **Signature**: `interact()`
 
-**CAUTION**: Not working.
+Emitted when opening a file at tree using `<Enter>`.
 
 ### `treeview.events.OPEN_FOLDER`
 
@@ -70,11 +70,24 @@ This changes available at `dev` branch and will be added, removed. or changed in
 
 Emitted when editor rerooting
 
+## Interactions
+
+### `treeview.open_tree(path)`
+
+Opens `TreeView` directly.
+
+**Arguments**:
+- `Path`:
+  - `string`: opens tree at `path`
+  - `nil`: opens tree at last location
+
 ## Misc
 
 ### `treeview.replace(win)`
 
-Opens `treeview` and closes `win`
+Opens `treeview` and closes passed `win`
+
+**Commentary**: *I don't know, where it will be useful, but it exists*
 
 ## Getters
 
