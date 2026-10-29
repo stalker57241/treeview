@@ -40,7 +40,7 @@ Enter `:tree` to open file list.
 
 - [`luafilesystem`](https://github.com/stalker57241/luafilesystem5.4) package
 - [`tabview`](https://github.com/stalker57241/tabview) plugin (optional)
-
+- [`plugin_register`](https://github.com/stalker57241/plugin_register) plugin (for proper interaction with other plugins)
 # What need to do
 
 - [X] Open subfolders directly in active list

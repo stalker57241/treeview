@@ -24,6 +24,7 @@ local _ENV = setmetatable(env, mt)
 -- MAIN --
 
 local module = {
+	meta = generate_meta("treeview", "1.1.0"),
 	win = nil,
 	lastwin = nil,
 	file = nil,
