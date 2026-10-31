@@ -23,7 +23,7 @@ local _ENV = setmetatable(env, mt)
 
 -- MAIN --
 if generate_meta == nil then
-	generate_meta = function(a, b) end
+	generate_meta = function(a, b) return nil end
 end
 local module = {
 	meta = generate_meta("treeview", "1.1.0"),
